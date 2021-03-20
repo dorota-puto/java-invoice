@@ -2,6 +2,8 @@ package pl.edu.agh.mwo.invoice.product;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
 
 public class FuelCanister extends Product {
     private static final LocalDate DRIVERS_DAY_DATE = LocalDate.of(2021, 4, 26);
@@ -22,5 +24,6 @@ public class FuelCanister extends Product {
         } else {
             return price.multiply(super.getTaxPercent()).add(super.getPrice()).add(excise);
         }
-    }
+    } 
+  
 }

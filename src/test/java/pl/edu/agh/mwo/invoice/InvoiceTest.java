@@ -142,7 +142,8 @@ public class InvoiceTest {
     public void testInvoicePrintProperProductName() {
         invoice.addProduct(new DairyProduct("Kozi Serek", new BigDecimal("10")), 3);
         String[] lines = invoice.printInvoice().split("\n");
-        String name = lines[1];
+        String productLine = lines[1];
+        String name = productLine.split(",")[0];
         Assert.assertEquals(name, "Kozi Serek");
     }
 
@@ -150,7 +151,8 @@ public class InvoiceTest {
     public void testInvoicePrintProperProductQuantity() {
         invoice.addProduct(new DairyProduct("Kozi Serek", new BigDecimal("10")), 3);
         String[] lines = invoice.printInvoice().split("\n");
-        String quantity = lines[2];
+        String productLine = lines[1];
+        String quantity = productLine.split(",")[1];
         Assert.assertEquals(quantity, "3");
     }
 
@@ -159,7 +161,8 @@ public class InvoiceTest {
         // price with tax: 108
         invoice.addProduct(new DairyProduct("Mleko Migdałowe", new BigDecimal("100")));
         String[] lines = invoice.printInvoice().split("\n");
-        String price = lines[3];
+        String productLine = lines[1];
+        String price = productLine.split(",")[2];
         Assert.assertEquals(price, "108.00");
     }
 
@@ -168,7 +171,7 @@ public class InvoiceTest {
         invoice.addProduct(new DairyProduct("Mleko Migdałowe", new BigDecimal("100")));
         invoice.addProduct(new DairyProduct("Kozi Serek", new BigDecimal("10")), 3);
         String[] lines = invoice.printInvoice().split("\n");
-        String nbOfPositions = lines[7];
+        String nbOfPositions = lines[3];
         Assert.assertEquals(nbOfPositions, "Liczba pozycji: 2");
     }
 
@@ -178,7 +181,7 @@ public class InvoiceTest {
         invoice.addProduct(new DairyProduct("Mleko Migdałowe", new BigDecimal("100")));
         String[] lines = invoice.printInvoice().split("\n");
         int length = lines.length;
-        Assert.assertEquals(length, 8);
+        Assert.assertEquals(length, 4);
     }
 
     @Test
@@ -193,7 +196,7 @@ public class InvoiceTest {
         invoice.addProduct(new DairyProduct("Kozi Serek", new BigDecimal("10")), 3);
         invoice.addProduct(new DairyProduct("Kozi Serek", new BigDecimal("10")), 3);
         String[] lines = invoice.printInvoice().split("\n");
-        String nbOfPositions = lines[4];
+        String nbOfPositions = lines[2];
         Assert.assertEquals(nbOfPositions, "Liczba pozycji: 1");
     }
 
@@ -202,7 +205,26 @@ public class InvoiceTest {
         invoice.addProduct(new DairyProduct("Kozi Serek", new BigDecimal("10")), 3);
         invoice.addProduct(new DairyProduct("Kozi Serek", new BigDecimal("10")), 3);
         String[] lines = invoice.printInvoice().split("\n");
-        String quantity = lines[2];
+        String productLine = lines[1];
+        String quantity = productLine.split(",")[1];
         Assert.assertEquals(quantity, "6");
+    }
+    
+    @Test
+    public void testInvoiceAddDifferentProductsWithDifferentTax() {
+        invoice.addProduct(new DairyProduct("Kozi Serek", new BigDecimal("10")), 3);
+        invoice.addProduct(new OtherProduct("Kozi Serek", new BigDecimal("10")), 3);
+        String[] lines = invoice.printInvoice().split("\n");
+        String nbOfPositions = lines[3];
+        Assert.assertEquals(nbOfPositions, "Liczba pozycji: 2");
+    }
+    
+    @Test
+    public void testInvoiceAddDifferentProductsWithDifferentPrice() {
+        invoice.addProduct(new DairyProduct("Kozi Serek", new BigDecimal("11")), 3);
+        invoice.addProduct(new DairyProduct("Kozi Serek", new BigDecimal("10")), 3);
+        String[] lines = invoice.printInvoice().split("\n");
+        String nbOfPositions = lines[3];
+        Assert.assertEquals(nbOfPositions, "Liczba pozycji: 2");
     }
 }

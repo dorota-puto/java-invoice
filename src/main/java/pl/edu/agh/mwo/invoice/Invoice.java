@@ -51,8 +51,8 @@ public class Invoice {
         StringBuilder builder = new StringBuilder();
         builder.append(number + "\n");
         for (Product product : products.keySet()) {
-            builder.append(product.getName() + "\n");
-            builder.append(products.get(product) + "\n");
+            builder.append(product.getName() + ",");
+            builder.append(products.get(product) + ",");
             builder.append(getGrossTotal().toString() + "\n");
         }
         builder.append("Liczba pozycji: " + products.size());
