@@ -1,11 +1,11 @@
 package pl.edu.agh.mwo.invoice.product;
 
 import java.math.BigDecimal;
+import java.time.LocalDate;
 
 import org.hamcrest.Matchers;
 import org.junit.Assert;
 import org.junit.Test;
-
 import pl.edu.agh.mwo.invoice.product.Product;
 
 public class ProductTest {
@@ -33,6 +33,24 @@ public class ProductTest {
     public void testPriceWithTax() {
         Product product = new DairyProduct("Oscypek", new BigDecimal("100.0"));
         Assert.assertThat(new BigDecimal("108"), Matchers.comparesEqualTo(product.getPriceWithTax()));
+    }
+        
+    @Test
+    public void testPriceWithTaxForBottleOfWine() {
+    	Product product = new BottleOfWine("Georgian Red Wine", new BigDecimal("100.0"));
+    	Assert.assertThat(new BigDecimal("128.56"), Matchers.comparesEqualTo(product.getPriceWithTax()));
+    }
+    
+    @Test
+    public void testPriceWithTaxForFuelCanister() {
+    	Product product = new FuelCanister("Diesel", new BigDecimal("100.0"), LocalDate.of(2020, 5, 2));
+    	Assert.assertThat(new BigDecimal("127.56"), Matchers.comparesEqualTo(product.getPriceWithTax()));
+    }
+    
+    @Test
+    public void testPriceWithTaxForFuelsAtDriversDay() {
+		Product product = new FuelCanister("Diesel", new BigDecimal("100.0"), LocalDate.of(2021, 4, 26));
+		Assert.assertThat(new BigDecimal("100.00"), Matchers.comparesEqualTo(product.getPriceWithTax()));
     }
 
     @Test(expected = IllegalArgumentException.class)
